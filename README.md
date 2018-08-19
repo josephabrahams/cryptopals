@@ -1,5 +1,4 @@
-# cryptopals
-Solutions to the [Matasano Crypto Challenges](https://cryptopals.com/)
+[![cryptopals](https://media.giphy.com/media/8BkHx3M15Kg2hwSR4I/giphy.gif)](https://cryptopals.com/)
 
 ## Requirements
 - Python 3.6
