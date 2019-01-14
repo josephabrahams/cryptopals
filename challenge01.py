@@ -1,19 +1,14 @@
 """
 Convert hex to base64
+
+The string 49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69…
+736f6e6f7573206d757368726f6f6d should produce SSdtIGtpbGxpbmcgeW91ciBicmFpbiB…
+saWtlIGEgcG9pc29ub3VzIG11c2hyb29t. So go ahead and make that happen.
+
+You'll need to use this code for the rest of the exercises.
 """
 
-import base64
-
-
-def hex_to_base64(hex_str):
-    return base64.b64encode(bytes.fromhex(hex_str)).decode('ascii')
-
-
-def hex_to_base64_test():
-    hex_str = b"I'm killing your brain like a poisonous mushroom".hex()
-    assert hex_to_base64(hex_str) == \
-        'SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t'
-
+from cryptopals.utils import hex_to_base64
 
 if __name__ == '__main__':
     import argparse

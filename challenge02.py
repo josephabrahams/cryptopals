@@ -1,18 +1,14 @@
 """
-Fixed XOR
+Write a function that takes two equal-length buffers and produces
+their XOR combination.
+
+If your function works properly, then when you feed it the string
+1c0111001f010100061a024b53535009181c after hex decoding, and when
+XOR'd against 686974207468652062756c6c277320657965 should produce
+746865206b696420646f6e277420706c6179.
 """
 
-
-def fixed_xor(buffer1, buffer2):
-    return '{0:x}'.format(int(buffer1, 16) ^ int(buffer2, 16))
-
-
-def fixed_xor_test():
-    buffer1 = '1c0111001f010100061a024b53535009181c'
-    buffer2 = '686974207468652062756c6c277320657965'
-    result = '746865206b696420646f6e277420706c6179'
-    assert fixed_xor(buffer1, buffer2) == result
-
+from cryptopals import fixed_xor
 
 if __name__ == '__main__':
     import argparse

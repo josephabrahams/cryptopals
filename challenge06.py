@@ -1,43 +1,41 @@
 """
 Break repeating-key XOR
+
+challenge06.txt has been base64'd after being encrypted with repeating-key XOR.
+
+Decrypt it.
+
+Here's how:
+
+ 1. Let KEYSIZE be the guessed length of the key. Try values from 2 to 40.
+ 2. Write a function to compute the edit distance/Hamming distance between
+    two strings. The Hamming distance is just the number of differing bits.
+    The distance between "this is a test" and "wokka wokka!!!" is 37. Make
+    sure your code agrees before you proceed.
+ 3. For each KEYSIZE, take the first KEYSIZE worth of bytes, and the second
+    KEYSIZE worth of bytes, and find the edit distance between them. Normalize
+    this result by dividing by KEYSIZE.
+ 4. The KEYSIZE with the smallest normalized edit distance is probably the key.
+    You could proceed perhaps with the smallest 2-3 KEYSIZE values. Or take 4
+    KEYSIZE blocks instead of 2 and average the distances.
+ 5. Now that you probably know the KEYSIZE: break the ciphertext into blocks
+    of KEYSIZE length.
+ 6. Now transpose the blocks: make a block that is the first byte of every
+    block, and a block that is the second byte of every block, and so on.
+ 7. Solve each block as if it was single-character XOR. You already have code
+    to do this.
+ 8. For each block, the single-byte XOR key that produces the best looking
+    histogram is the repeating-key XOR key byte for that block. Put them
+    together and you have the key.
+
+This code is going to turn out to be surprisingly useful later on.
+Breaking repeating-key XOR ("Vigenere") statistically is obviously an
+academic exercise, a "Crypto 101" thing. But more people "know how" to
+break it than can actually break it, and a similar technique breaks
+something much more important.
 """
 
-import os
-
-
-# https://stackoverflow.com/a/31007358
-def edit_distance(str1, str2):
-    s1 = ''.join(format(ord(l), '7b') for l in str1)
-    s2 = ''.join(format(ord(l), '7b') for l in str2)
-    assert len(s1) == len(s2)
-    return sum(c1 != c2 for c1, c2 in zip(s1, s2))
-
-
-def edit_distance_test():
-    s1 = 'this is a test'
-    s2 = 'wokka wokka!!!'
-    assert edit_distance(s1, s2) == 37
-
-
-def break_repeatingkey_xor(filename):
-    edit_distances = []
-
-    with open(os.path.realpath(os.path.join(os.getcwd(), filename)), 'r') as f:
-        for line in f:
-            for ks in range(2, 41):
-                try:
-                    ed = edit_distance(line[0:ks], line[ks:2*ks])
-                    edit_distances.append(ed / ks)
-                except AssertionError:
-                    break
-            break
-        keysize = edit_distances.index(min(edit_distances)) + 1
-        return keysize
-
-
-def break_repeatingkey_xor_test():
-    pass
-
+from cryptopals import break_repeatingkey_xor
 
 if __name__ == '__main__':
     import argparse
@@ -49,4 +47,5 @@ if __name__ == '__main__':
                         help='filename of file to decrypt')
     args = parser.parse_args()
 
-    print(break_repeatingkey_xor(args.filename))
+    message, key = break_repeatingkey_xor(args.filename)
+    print(message)
